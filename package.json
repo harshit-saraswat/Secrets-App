@@ -1,0 +1,24 @@
+{
+  "name": "secrets",
+  "version": "1.0.0",
+  "description": "A simple Secrets app like Whisper to implement Auth",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/harshit-saraswat/Secrets-App.git"
+  },
+  "author": "Harshit Saraswat",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/harshit-saraswat/Secrets-App/issues"
+  },
+  "homepage": "https://github.com/harshit-saraswat/Secrets-App#readme",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "ejs": "^3.1.5",
+    "express": "^4.17.1"
+  }
+}
