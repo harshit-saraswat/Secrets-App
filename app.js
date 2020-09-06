@@ -3,6 +3,8 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const ejs = require('ejs');
 const mongoose = require('mongoose');
+const encrypt = require('mongoose-encryption');
+const secrets = require(__dirname+"/secrets");
 
 // App Setup
 const app = express();
@@ -24,6 +26,9 @@ const userSchema = new mongoose.Schema({
         required: [true, "No password specified."]
     }
 });
+
+secretKey=secrets['SECRET_KEY'];
+userSchema.plugin(encrypt,{secret:secretKey, encryptedFields:['password']});
 
 // User Model
 const User = mongoose.model("User", userSchema);
