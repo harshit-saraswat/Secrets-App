@@ -67,26 +67,20 @@ app.get("/login", function (req, res) {
 
 // Login Post Route
 app.post("/login", function (req, res) {
-    // const username = req.body.username;
-    // const password = md5(req.body.password);
+    const newUser = new User({
+        username:req.body.username,
+        password:req.body.password
+    });
 
-    // User.findOne({ email: username }, function (err, foundUser) {
-    //     if (err) {
-    //         console.log(err);
-    //     } else {
-    //         if (!foundUser) {
-    //             res.redirect("/login");
-    //         } else {
-    //             bcrypt.compare(password, foundUser.password, function (err, result) {
-    //                 if (result == true) {
-    //                     res.render("secrets");
-    //                 } else {
-    //                     res.redirect("/login");
-    //                 }
-    //             });
-    //         }
-    //     }
-    // });
+    req.login(newUser,function(err){
+        if(err){
+            console.log(err);
+        }else{
+            passport.authenticate("local")(req,res,function(){
+                res.redirect("/secrets");
+            }); 
+        }
+    })
 });
 
 // Register Get Route
@@ -96,22 +90,6 @@ app.get("/register", function (req, res) {
 
 // Register Post Route
 app.post("/register", function (req, res) {
-
-    // bcrypt.hash(req.body.password, saltRounds, function (err, hash) {
-    //     const newUser = User({
-    //         email: req.body.username,
-    //         password: hash
-    //     });
-
-    //     newUser.save(function (err) {
-    //         if (err) {
-    //             console.log(err);
-    //         } else {
-    //             res.render("secrets");
-    //         }
-    //     });
-    // });
-
     User.register({username:req.body.username},req.body.password, function(err,user){
         if(err){
             console.log(err);
@@ -122,6 +100,12 @@ app.post("/register", function (req, res) {
             }); 
         }
     });
+});
+
+// Logout Route
+app.get("/logout", function (req, res) {
+    req.logout();
+    res.redirect("/")
 });
 
 // App Run
