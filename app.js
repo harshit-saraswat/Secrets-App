@@ -32,14 +32,8 @@ mongoose.set("useCreateIndex",true);
 
 // User Schema
 const userSchema = new mongoose.Schema({
-    email: {
-        type: String,
-        required: [true, "No email specified."]
-    },
-    password: {
-        type: String,
-        required: [true, "No password specified."]
-    }
+    email: String,
+    password: String
 });
 
 userSchema.plugin(passportLocalMongoose);
@@ -55,6 +49,15 @@ passport.deserializeUser(User.deserializeUser());
 // Home Route
 app.get("/", function (req, res) {
     res.render("home");
+});
+
+// Secrets Get Route
+app.get("/secrets", function (req, res) {
+    if(req.isAuthenticated()){
+        res.render("secrets");
+    }else{
+        res.redirect("/login");
+    }
 });
 
 // Login Get Route
@@ -109,7 +112,16 @@ app.post("/register", function (req, res) {
     //     });
     // });
 
-    
+    User.register({username:req.body.username},req.body.password, function(err,user){
+        if(err){
+            console.log(err);
+            res.redirect("/register");
+        }else{
+            passport.authenticate("local")(req,res,function(){
+                res.redirect("/secrets");
+            }); 
+        }
+    });
 });
 
 // App Run
