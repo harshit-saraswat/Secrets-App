@@ -66,6 +66,11 @@ app.get("/", function (req, res) {
     res.render("home");
 });
 
+// Google Oauth Route
+app.get("/auth/google",
+    passport.authenticate("google",{scope:['profile']})
+);
+
 // Secrets Get Route
 app.get("/secrets", function (req, res) {
     if(req.isAuthenticated()){
